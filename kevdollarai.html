@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KevDollarAI — Trading Analysis Technology — KevDollarFX</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FBF5EF; --cream-deep:#F4EAE0; --ink:#17140F; --ink-soft:#57534C;
+    --red:#DD141C; --red-deep:#9A0D13; --line:#E4D9CC; --green:#268A4A; --amber:#C97A0A; --white:#FFFFFF;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0; background:var(--cream); color:var(--ink); font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased;}
+  h1,h2,h3{font-family:'Poppins',sans-serif; font-weight:700; line-height:1.1; margin:0; letter-spacing:-0.01em;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  a{color:inherit; text-decoration:none;}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 32px;}
+  @media (max-width:640px){ .wrap{padding:0 20px;} section{padding:48px 0 !important;} }
+  img{max-width:100%; display:block;}
+
+  .btn{display:inline-flex; align-items:center; gap:8px; padding:14px 26px; border-radius:999px; font-weight:600; font-size:15px; cursor:pointer; border:1.5px solid transparent; white-space:nowrap;}
+  .btn-primary{background:var(--red); color:var(--white);}
+  .btn-outline{background:transparent; border-color:var(--ink); color:var(--ink);}
+  .btn-dark{background:var(--ink); color:var(--white);}
+  .btn-deriv{background:#FF444F; color:white;}
+
+  header{position:sticky; top:0; z-index:50; background:rgba(251,245,239,0.92); backdrop-filter:blur(8px); border-bottom:1px solid var(--line);}
+  nav{display:flex; align-items:center; justify-content:space-between; padding:14px 0;}
+  .brand{display:flex; align-items:center; gap:10px;}
+  .brand img{width:42px; height:42px; object-fit:contain;}
+  .brand-text{font-family:'Poppins',sans-serif; font-weight:800; font-size:19px; line-height:1;}
+  .brand-text span{color:var(--red);}
+  .nav-links{display:flex; gap:30px; font-weight:500; font-size:15px; color:var(--ink-soft);}
+  .nav-links a.active{color:var(--ink); font-weight:700;}
+  .nav-links a:hover{color:var(--ink);}
+  .nav-actions{display:flex; align-items:center; gap:14px;}
+  .nav-actions .btn{padding:11px 20px; font-size:14px;}
+  .menu-toggle{display:none; width:40px; height:40px; border-radius:10px; border:1.5px solid var(--line); background:var(--white); align-items:center; justify-content:center; cursor:pointer;}
+  .menu-toggle span, .menu-toggle span::before, .menu-toggle span::after{content:""; display:block; width:18px; height:2px; background:var(--ink); position:relative;}
+  .menu-toggle span::before{position:absolute; top:-6px;} .menu-toggle span::after{position:absolute; top:6px;}
+  .mobile-panel{display:none; flex-direction:column; gap:2px; padding:10px 0 16px; border-top:1px solid var(--line);}
+  .mobile-panel a{padding:12px 4px; font-weight:600; font-size:15px; color:var(--ink); border-bottom:1px solid var(--line);}
+  .mobile-panel .mp-actions{display:flex; gap:10px; padding-top:14px;}
+  .mobile-panel .mp-actions .btn{flex:1; justify-content:center;}
+  header.menu-open .mobile-panel{display:flex;}
+  @media (max-width:900px){ .nav-links{display:none;} .nav-actions .btn-outline{display:none;} .menu-toggle{display:flex;} }
+
+  .page-hero{padding:56px 0 30px; text-align:center;}
+  .page-hero .eyebrow-pill{display:inline-flex; align-items:center; gap:8px; background:var(--white); border:1.5px solid var(--line); padding:6px 14px 6px 6px; border-radius:999px; font-size:13px; font-weight:600; color:var(--ink-soft);}
+  .page-hero .eyebrow-pill .dot{width:22px;height:22px;border-radius:50%; background:var(--red); color:white; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700;}
+  .page-hero h1{font-size:42px; margin-top:18px;}
+  @media (max-width:560px){ .page-hero h1{font-size:28px;} }
+  .page-hero p{color:var(--ink-soft); font-size:16px; margin:16px auto 0; max-width:560px; line-height:1.6;}
+
+  section{padding:56px 0;}
+
+  .bot-frame-card{
+    background:var(--ink); border-radius:24px; padding:14px;
+    clip-path: polygon(0 0, calc(100% - 34px) 0, 100% 34px, 100% 100%, 34px 100%, 0 calc(100% - 34px));
+  }
+  .bot-frame-inner{background:var(--white); border-radius:16px; overflow:hidden;}
+  .bot-frame-inner iframe{width:100%; height:640px; border:none; display:block;}
+  @media (max-width:640px){ .bot-frame-inner iframe{height:520px;} }
+  .frame-toolbar{display:flex; align-items:center; justify-content:space-between; padding:14px 6px 18px; flex-wrap:wrap; gap:10px;}
+  .frame-toolbar .live-dot{display:inline-flex; align-items:center; gap:7px; font-family:'IBM Plex Mono'; font-size:12px; color:#B9B4AC;}
+  .frame-toolbar .live-dot span{width:8px; height:8px; border-radius:50%; background:var(--green); display:inline-block;}
+  .fallback-note{
+    background:var(--cream-deep); border:1.5px solid var(--line); border-radius:12px;
+    padding:16px 18px; margin-top:18px; font-size:13.5px; color:var(--ink-soft); text-align:center; line-height:1.6;
+  }
+  .fallback-note a{color:var(--red-deep); font-weight:700; border-bottom:1.5px solid var(--red-deep);}
+
+  .feature-mini-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:40px;}
+  @media (max-width:820px){ .feature-mini-grid{grid-template-columns:1fr 1fr;} }
+  @media (max-width:560px){ .feature-mini-grid{grid-template-columns:1fr;} }
+  .mini-card{background:var(--white); border:1.5px solid var(--line); border-radius:14px; padding:20px;}
+  .mini-card h4{font-size:15px;}
+  .mini-card p{font-size:13.5px; color:var(--ink-soft); margin-top:6px; line-height:1.55;}
+
+  /* Deriv referral band */
+  .deriv-band{
+    background:linear-gradient(120deg, #1B1B1F, #2A0B0D);
+    border-radius:24px; padding:44px; color:white;
+    display:grid; grid-template-columns:1.2fr 1fr; gap:34px; align-items:center;
+  }
+  @media (max-width:820px){ .deriv-band{grid-template-columns:1fr; padding:30px;} }
+  .deriv-band h2{color:white; font-size:26px;}
+  .deriv-band p{color:#C9C4BD; margin-top:12px; font-size:14.5px; line-height:1.65;}
+  .deriv-band .btn-row{display:flex; gap:12px; margin-top:22px; flex-wrap:wrap;}
+  .code-box{
+    background:rgba(255,255,255,0.07); border:1.5px solid rgba(255,255,255,0.15);
+    border-radius:12px; padding:16px 18px; display:flex; align-items:center; justify-content:space-between; gap:10px;
+  }
+  .code-box .code-label{font-size:11px; color:#B9B4AC; font-family:'IBM Plex Mono'; letter-spacing:0.04em;}
+  .code-box .code-val{font-family:'IBM Plex Mono'; font-weight:700; font-size:17px; color:white; margin-top:4px;}
+  .copy-btn{background:white; color:var(--ink); border:none; border-radius:8px; padding:9px 14px; font-size:12.5px; font-weight:700; cursor:pointer; flex:0 0 auto;}
+  .deriv-side{display:flex; flex-direction:column; gap:14px;}
+  .deriv-fine{font-size:11.5px; color:#8A857D; margin-top:14px; line-height:1.6;}
+
+  footer{padding:50px 0 30px; border-top:1px solid var(--line);}
+  .footer-grid{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px;}
+  .footer-links{display:flex; gap:26px; font-size:14px; color:var(--ink-soft); flex-wrap:wrap;}
+  .social-row{display:flex; gap:16px; margin-top:18px; align-items:center; flex-wrap:wrap;}
+  .social-row a{display:flex; align-items:center; gap:7px; font-size:13.5px; font-weight:600; color:var(--ink-soft); border:1.5px solid var(--line); padding:7px 14px; border-radius:999px;}
+  .social-row a:hover{border-color:var(--red); color:var(--red-deep);}
+  .fine{font-size:12.5px; color:#A39E96; margin-top:20px; line-height:1.6;}
+  .copyright{font-size:12px; color:var(--ink-soft); margin-top:14px; font-weight:600; padding-top:14px; border-top:1px solid var(--line);}
+</style>
+  <!-- Google AdSense Auto Ads: enables account-controlled in-page, anchor, and vignette formats. -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5671905101681007" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="adsense.css">
+</head>
+<body>
+<div class="adsense-placement adsense-placement--top" data-adsense-placement="top" aria-label="Advertisement" hidden></div>
+
+
+<header>
+  <div class="wrap">
+    <nav>
+      <div class="brand">
+        <img src="kevdollarfx-logo.png" alt="KevDollarFX">
+        <div class="brand-text">KEVDOLLAR<span>FX</span></div>
+      </div>
+      <div class="nav-links">
+        <a href="index.html#academy">Academy</a>
+        <a href="lessons.html">Lessons</a>
+        <a href="strategies.html">Strategies</a>
+        <a href="index.html#research">Research</a>
+        <a href="kevdollarai.html" class="active">KevDollarAI</a>
+      </div>
+      <div class="nav-actions">
+        <a href="#" class="btn btn-outline">Log in</a>
+        <a href="index.html#academy" class="btn btn-primary">Start Learning</a>
+        <button class="menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false"><span></span></button>
+      </div>
+    </nav>
+    <div class="mobile-panel" id="mobilePanel">
+      <a href="index.html#academy">Academy</a>
+      <a href="lessons.html">Lessons</a>
+      <a href="strategies.html">Strategies</a>
+      <a href="index.html#research">Research</a>
+      <a href="kevdollarai.html">KevDollarAI</a>
+      <div class="mp-actions">
+        <a href="#" class="btn btn-outline">Log in</a>
+        <a href="index.html#academy" class="btn btn-primary">Start Learning</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="page-hero">
+  <div class="wrap">
+    <span class="eyebrow-pill"><span class="dot">AI</span> The technology behind the research</span>
+    <h1>KevDollarAI</h1>
+    <p>KevDollarAI turns market data into structured analysis tools — designed to help traders observe patterns, probabilities, and conditions. Once you've been through the Academy, this is where you put the concepts to work.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="bot-frame-card">
+      <div class="bot-frame-inner">
+        <iframe
+          src="https://cashprinterkevai.netlify.app"
+          title="KevDollarAI"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox">
+        </iframe>
+      </div>
+      <div class="frame-toolbar">
+        <span class="live-dot"><span></span>KEVDOLLARAI — LIVE TOOL</span>
+        <a href="https://cashprinterkevai.netlify.app" target="_blank" rel="noopener" class="btn btn-dark" style="padding:10px 18px; font-size:13.5px;">Open in Full Screen ↗</a>
+      </div>
+    </div>
+    <div class="fallback-note">
+      Tool not loading, or want more room to work? <a href="https://cashprinterkevai.netlify.app" target="_blank" rel="noopener">Open KevDollarAI in a new tab →</a>
+    </div>
+
+    <div class="feature-mini-grid">
+      <div class="mini-card"><h4>Tick & Digit Analysis</h4><p>Observes live digit activity and frequency in real time.</p></div>
+      <div class="mini-card"><h4>Probability Scanning</h4><p>Surfaces deviation and dominance conditions as they form.</p></div>
+      <div class="mini-card"><h4>Strategy Conditions</h4><p>Flags when a strategy's defined conditions are, and aren't, met.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="deriv">
+  <div class="wrap">
+    <div class="deriv-band">
+      <div>
+        <span style="font-family:'IBM Plex Mono'; font-size:12px; color:#FF6B72; font-weight:700; letter-spacing:0.03em;">NEW TO DERIV?</span>
+        <h2 style="margin-top:10px;">Open your Deriv account to start applying what you've learned.</h2>
+        <p>KevDollarAI and every strategy in the Academy are built around Deriv's markets. If you don't have an account yet, create one with our link below — it costs you nothing extra, and it helps support KevDollarFX at no cost to you.</p>
+        <div class="btn-row">
+          <a href="https://t.deriv.link?t=TZPMWESTCQRM" target="_blank" rel="noopener" class="btn btn-deriv">Create Your Deriv Account →</a>
+        </div>
+        <p class="deriv-fine">This is a referral link — KevDollarFX may earn a commission if you sign up through it, at no extra cost to you. Trading involves risk. Nothing on this site is financial advice.</p>
+      </div>
+      <div class="deriv-side">
+        <div class="code-box">
+          <div>
+            <div class="code-label">REFERRAL CODE</div>
+            <div class="code-val" id="refCode">3EKAN694W9V5</div>
+          </div>
+          <button class="copy-btn" id="copyBtn">Copy</button>
+        </div>
+        <p style="font-size:12.5px; color:#B9B4AC; line-height:1.6; margin:0;">Already have the Deriv app? Enter this code manually if you're not using the link above.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="adsense-placement adsense-placement--footer" data-adsense-placement="footer" aria-label="Advertisement" hidden></div>
+
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="brand"><img src="kevdollarfx-logo.png" alt="KevDollarFX" style="width:32px;height:32px;"><div class="brand-text" style="font-size:16px;">KEVDOLLAR<span>FX</span></div></div>
+      <div class="footer-links">
+        <a href="index.html#academy">Academy</a>
+        <a href="lessons.html">Lessons</a>
+        <a href="strategies.html">Strategies</a>
+        <a href="index.html#research">Research</a>
+        <a href="kevdollarai.html">KevDollarAI</a>
+      </div>
+    </div>
+    <div class="social-row">
+      <a href="https://www.instagram.com/kevdollarfx" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://t.me/KevdollarFx" target="_blank" rel="noopener">Telegram</a>
+    </div>
+    <p class="fine">KevDollarAI is an analysis tool, not a guaranteed-profit system. Trading involves risk, and past patterns do not guarantee future results. The Deriv link above is a referral link.</p>
+    <p class="copyright">© 2026 KevDollarFX. All rights reserved. The KevDollarFX name, mark, and all site content, design, and branding are the property of KevDollarFX. No part of this site may be copied, reproduced, redistributed, or claimed as the work of any other person or entity without prior written permission.</p>
+  </div>
+</footer>
+
+<script>
+  const menuToggle = document.getElementById('menuToggle');
+  const header = document.querySelector('header');
+  menuToggle.addEventListener('click', () => {
+    const open = header.classList.toggle('menu-open');
+    menuToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+
+  const copyBtn = document.getElementById('copyBtn');
+  const refCode = document.getElementById('refCode');
+  copyBtn.addEventListener('click', () => {
+    navigator.clipboard.writeText(refCode.textContent.trim()).then(() => {
+      copyBtn.textContent = 'Copied ✓';
+      setTimeout(() => { copyBtn.textContent = 'Copy'; }, 1800);
+    });
+  });
+</script>
+<script defer src="adsense-placements.js"></script>
+</body>
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Only Downs — Strategy Lab — KevDollarFX Academy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FBF5EF; --cream-deep:#F4EAE0; --ink:#17140F; --ink-soft:#57534C;
+    --red:#DD141C; --red-deep:#9A0D13; --line:#E4D9CC; --green:#268A4A; --amber:#C97A0A; --white:#FFFFFF;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--cream); color:var(--ink); font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased;}
+  h1,h2,h3{font-family:'Poppins',sans-serif; font-weight:700; line-height:1.15; margin:0; letter-spacing:-0.01em;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  a{color:inherit; text-decoration:none;}
+  .wrap{max-width:760px; margin:0 auto; padding:0 32px;}
+  @media (max-width:640px){ .wrap{padding:0 20px;} }
+  img{max-width:100%; display:block;}
+  .btn{display:inline-flex; align-items:center; gap:8px; padding:13px 24px; border-radius:999px; font-weight:600; font-size:15px; cursor:pointer; border:1.5px solid transparent;}
+  .btn-primary{background:var(--red); color:var(--white);}
+  .btn-outline{background:transparent; border-color:var(--ink); color:var(--ink);}
+  header{position:sticky; top:0; z-index:50; background:rgba(251,245,239,0.95); backdrop-filter:blur(8px); border-bottom:1px solid var(--line);}
+  .header-inner{max-width:760px; margin:0 auto; padding:16px 32px; display:flex; align-items:center; justify-content:space-between; gap:16px;}
+  @media (max-width:640px){ .header-inner{padding:14px 20px;} }
+  .crumb{font-family:'IBM Plex Mono'; font-size:12px; color:var(--red-deep); font-weight:600;}
+  .exit{color:var(--ink-soft); font-size:20px;}
+  main{padding:44px 0 90px;}
+  .title-row{display:flex; align-items:center; gap:14px; flex-wrap:wrap;}
+  .strat-title{font-size:32px;}
+  @media (max-width:560px){ .strat-title{font-size:24px;} }
+  .badge{font-size:11px; font-weight:700; letter-spacing:0.03em; padding:6px 12px; border-radius:999px; background:#FCEFDD; color:var(--amber);}
+  .step{margin-top:52px;}
+  .step-label{font-family:'IBM Plex Mono'; font-size:12px; color:var(--red-deep); font-weight:700; letter-spacing:0.03em; margin-bottom:10px;}
+  .step p{font-size:16px; line-height:1.65; color:var(--ink-soft);}
+  ul.idea-list{margin:0; padding-left:20px; color:var(--ink-soft); font-size:15.5px; line-height:1.8;}
+  .sim-box{background:var(--ink); border-radius:16px; padding:30px; text-align:center;}
+  .sim-stream{display:flex; justify-content:center; gap:8px; flex-wrap:wrap; margin-bottom:16px;}
+  .sim-chip{font-family:'IBM Plex Mono'; font-weight:700; font-size:13px; padding:8px 12px; border-radius:8px; background:#2A2621; color:#D8D3CC;}
+  .sim-chip.hot{background:var(--red); color:white;}
+  .sim-status{font-family:'IBM Plex Mono'; font-weight:700; font-size:15px; color:white; margin-top:4px;}
+  .sim-waiting{font-family:'IBM Plex Mono'; font-size:13px; color:var(--amber); margin-top:8px;}
+  .important-box{background:#FDEBEA; border:2px solid var(--red); border-radius:14px; padding:22px; text-align:center; font-family:'Poppins'; font-weight:800; font-size:19px; color:var(--red-deep);}
+  @media (max-width:480px){ .important-box{font-size:15px;} }
+  .invalid-box{background:var(--white); border:1.5px solid var(--line); border-radius:14px; padding:22px;}
+  .invalid-seq{font-family:'IBM Plex Mono'; font-size:14px; margin-bottom:10px;}
+  .invalid-seq b{color:var(--red);}
+  .invalid-status{font-family:'Poppins'; font-weight:700; color:var(--red-deep); font-size:15px;}
+  .invalid-sub{font-family:'IBM Plex Mono'; font-size:12px; color:var(--ink-soft); margin-top:4px;}
+  .quiz-card{background:var(--white); border:1.5px solid var(--line); border-radius:16px; padding:26px;}
+  .quiz-q{font-size:16px; font-weight:600; margin-bottom:18px; line-height:1.5;}
+  .quiz-opt{display:flex; align-items:center; gap:12px; padding:14px 16px; border:1.5px solid var(--line); border-radius:12px; margin-bottom:10px; cursor:pointer; font-size:15px; font-weight:500; background:var(--white);}
+  .quiz-opt:hover{border-color:var(--red);}
+  .quiz-opt .letter{width:26px; height:26px; border-radius:50%; background:var(--cream-deep); display:flex; align-items:center; justify-content:center; font-family:'IBM Plex Mono'; font-weight:700; font-size:12.5px; flex:0 0 auto;}
+  .quiz-opt.correct{border-color:var(--green); background:#EEFAF2;}
+  .quiz-opt.correct .letter{background:var(--green); color:white;}
+  .quiz-opt.incorrect{border-color:var(--red); background:#FDEEEE;}
+  .quiz-opt.incorrect .letter{background:var(--red); color:white;}
+  .quiz-opt.disabled{cursor:default;}
+  .feedback{margin-top:18px; padding:18px; border-radius:12px; display:none;}
+  .feedback.show{display:block;}
+  .feedback.correct-fb{background:#EEFAF2; border:1.5px solid var(--green);}
+  .feedback.wrong-fb{background:#FDEEEE; border:1.5px solid var(--red);}
+  .feedback .fb-title{font-family:'Poppins'; font-weight:700; font-size:15px;}
+  .feedback.correct-fb .fb-title{color:var(--green);}
+  .feedback.wrong-fb .fb-title{color:var(--red-deep);}
+  .feedback p{margin-top:6px; color:var(--ink); font-size:14px;}
+  footer{padding:40px 0; border-top:1px solid var(--line); margin-top:40px;}
+  .copyright{font-size:12px; color:var(--ink-soft); font-weight:600; text-align:center; line-height:1.6;}
+</style>
+  <!-- Google AdSense Auto Ads: enables account-controlled in-page, anchor, and vignette formats. -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5671905101681007" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="adsense.css">
+</head>
+<body>
+<div class="adsense-placement adsense-placement--top" data-adsense-placement="top" aria-label="Advertisement" hidden></div>
+
+<header>
+  <div class="header-inner">
+    <div class="crumb">STRATEGY LAB / ONLY DOWNS</div>
+    <a href="strategies.html" class="exit">×</a>
+  </div>
+</header>
+<main>
+  <div class="wrap">
+    <div class="title-row">
+      <h1 class="strat-title">Only Downs</h1>
+      <span class="badge">RESEARCH</span>
+    </div>
+
+    <div class="step">
+      <div class="step-label">WHAT IS IT?</div>
+      <p>Only Downs studies confluence between Bollinger Bands, RSI, and momentum to look for potential downside continuation conditions. All three signals must point the same direction before the setup is even considered.</p>
+    </div>
+
+    <div class="step">
+      <div class="step-label">THE IDEA</div>
+      <ul class="idea-list">
+        <li>Price position relative to the Bollinger Bands.</li>
+        <li>RSI reading, and whether it sits in an oversold zone.</li>
+        <li>Momentum direction, confirming the move isn't stalling.</li>
+        <li>A confirming tick after all three align.</li>
+        <li>Entry is only considered once every condition points the same way.</li>
+      </ul>
+    </div>
+
+    <div class="step">
+      <div class="step-label">VISUAL SIMULATION</div>
+      <div class="sim-box">
+        <div class="sim-stream"><span class="sim-chip hot">BANDS: LOWER TOUCH</span><span class="sim-chip hot">RSI: 28</span><span class="sim-chip hot">MOMENTUM: DOWN</span></div><div class="sim-status">3 / 3 ALIGNED</div><div class="sim-waiting">WAITING FOR CONFIRMATION...</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="important-box">NO CONFIRMATION = NO ENTRY</div>
+    </div>
+
+    <div class="step">
+      <div class="step-label">INVALID SETUP</div>
+      <div class="invalid-box">
+        <div class="invalid-seq">Bands + RSI aligned, but <b>momentum flips upward</b> before confirmation</div>
+        <div class="invalid-status">SETUP INVALID</div>
+        <div class="invalid-sub">WAIT</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-label">KNOWLEDGE CHECK</div>
+      <div class="quiz-card">
+        <div class="quiz-q">Bands and RSI align but momentum flips upward before confirmation arrives. What should happen?</div>
+        <div id="quizOptions">
+          <div class="quiz-opt" data-correct="false"><span class="letter">A</span><span>Enter anyway</span></div>
+          <div class="quiz-opt" data-correct="true"><span class="letter">B</span><span>Wait</span></div>
+          <div class="quiz-opt" data-correct="false"><span class="letter">C</span><span>Reverse the position</span></div>
+          <div class="quiz-opt" data-correct="false"><span class="letter">D</span><span>Increase the stake</span></div>
+        </div>
+        <div class="feedback correct-fb" id="feedbackCorrect">
+          <div class="fb-title">CORRECT ✓</div>
+          <p>With one of the three conditions no longer aligned, the setup is invalid — the response is to wait for a fresh alignment.</p>
+        </div>
+        <div class="feedback wrong-fb" id="feedbackWrong">
+          <div class="fb-title">NOT QUITE</div>
+          <p>All three signals need to agree. If one flips before confirmation, the setup no longer holds.</p>
+          <button class="btn btn-outline" id="tryAgainBtn">Try Again</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<footer>
+  <div class="adsense-placement adsense-placement--footer" data-adsense-placement="footer" aria-label="Advertisement" hidden></div>
+
+  <div class="wrap">
+    <p class="social-mini" style="text-align:center; margin:0 0 14px; font-size:13px;">
+      <a href="https://www.instagram.com/kevdollarfx" target="_blank" rel="noopener" style="color:var(--red-deep); font-weight:600;">Instagram</a>
+      &nbsp;·&nbsp;
+      <a href="https://t.me/KevdollarFx" target="_blank" rel="noopener" style="color:var(--red-deep); font-weight:600;">Telegram</a>
+    </p>
+    <p class="copyright">© 2026 KevDollarFX. All rights reserved. This strategy description is a research concept, not financial advice or a guaranteed system. Content may not be copied, reproduced, or claimed as the work of any other party.</p>
+  </div>
+</footer>
+<script>
+  const options = document.querySelectorAll('.quiz-opt');
+  const feedbackCorrect = document.getElementById('feedbackCorrect');
+  const feedbackWrong = document.getElementById('feedbackWrong');
+  const tryAgainBtn = document.getElementById('tryAgainBtn');
+  let answered = false;
+  options.forEach(opt => {
+    opt.addEventListener('click', () => {
+      if (answered) return;
+      const isCorrect = opt.dataset.correct === 'true';
+      options.forEach(o => o.classList.add('disabled'));
+      if (isCorrect) {
+        answered = true;
+        opt.classList.add('correct');
+        feedbackCorrect.classList.add('show');
+      } else {
+        opt.classList.add('incorrect');
+        feedbackWrong.classList.add('show');
+      }
+    });
+  });
+  tryAgainBtn.addEventListener('click', () => {
+    options.forEach(o => { o.classList.remove('incorrect','disabled'); });
+    feedbackWrong.classList.remove('show');
+  });
+</script>
+<script defer src="adsense-placements.js"></script>
+</body>
+</html>

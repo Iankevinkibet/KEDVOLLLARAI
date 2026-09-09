@@ -1,0 +1,52 @@
+/* Shared AdSense placement styling. Empty placements stay hidden until a real ad-unit slot ID is configured. */
+.adsense-placement[hidden] {
+  display: none !important;
+}
+
+.adsense-placement {
+  width: 100%;
+  max-width: 970px;
+  box-sizing: border-box;
+  margin: 24px auto;
+  padding: 0 16px;
+  text-align: center;
+  overflow: hidden;
+}
+
+.adsense-placement--top {
+  margin-top: 0;
+  margin-bottom: 28px;
+}
+
+.adsense-placement--footer {
+  margin-top: 28px;
+  margin-bottom: 12px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(128, 112, 96, 0.18);
+}
+
+.adsense-placement::before {
+  content: "Advertisement";
+  display: block;
+  margin-bottom: 8px;
+  color: #8b8178;
+  font: 600 10px/1.2 'IBM Plex Mono', monospace;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.adsense-placement .adsbygoogle {
+  display: block;
+  min-height: 90px;
+  width: 100%;
+}
+
+@media (max-width: 640px) {
+  .adsense-placement {
+    padding: 0 12px;
+  }
+
+  .adsense-placement--footer {
+    padding-top: 18px;
+  }
+}

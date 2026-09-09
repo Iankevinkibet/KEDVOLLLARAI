@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Understanding Market Movement — Lesson 03 — KevDollarFX Academy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FBF5EF; --cream-deep:#F4EAE0; --ink:#17140F; --ink-soft:#57534C;
+    --red:#DD141C; --red-deep:#9A0D13; --line:#E4D9CC; --green:#268A4A; --amber:#C97A0A; --white:#FFFFFF;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--cream); color:var(--ink); font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased;}
+  h1,h2,h3{font-family:'Poppins',sans-serif; font-weight:700; line-height:1.15; margin:0; letter-spacing:-0.01em;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  a{color:inherit; text-decoration:none;}
+  .wrap{max-width:760px; margin:0 auto; padding:0 32px;}
+  @media (max-width:640px){ .wrap{padding:0 20px;} }
+  img{max-width:100%; display:block;}
+
+  .btn{display:inline-flex; align-items:center; gap:8px; padding:13px 24px; border-radius:999px; font-weight:600; font-size:15px; cursor:pointer; border:1.5px solid transparent;}
+  .btn-primary{background:var(--red); color:var(--white);}
+  .btn-outline{background:transparent; border-color:var(--ink); color:var(--ink);}
+
+  header{position:sticky; top:0; z-index:50; background:rgba(251,245,239,0.95); backdrop-filter:blur(8px); border-bottom:1px solid var(--line);}
+  .header-inner{max-width:760px; margin:0 auto; padding:16px 32px; display:flex; align-items:center; justify-content:space-between; gap:16px;}
+  @media (max-width:640px){ .header-inner{padding:14px 20px;} }
+  .crumb{font-family:'IBM Plex Mono'; font-size:12px; color:var(--red-deep); font-weight:600;}
+  .progress-pill{font-family:'IBM Plex Mono'; font-size:12px; font-weight:600; background:var(--white); border:1.5px solid var(--line); padding:6px 12px; border-radius:999px; white-space:nowrap;}
+  .exit{color:var(--ink-soft); font-size:20px;}
+  .progress-bar{height:4px; background:var(--line);}
+  .progress-bar-fill{height:100%; background:var(--red);}
+
+  main{padding:44px 0 90px;}
+  .lesson-title{font-size:32px; margin-top:6px;}
+  @media (max-width:560px){ .lesson-title{font-size:24px;} }
+
+  .step{margin-top:52px;}
+  .step-label{font-family:'IBM Plex Mono'; font-size:12px; color:var(--red-deep); font-weight:700; letter-spacing:0.03em; margin-bottom:10px;}
+  .step p{font-size:16px; line-height:1.65; color:var(--ink-soft);}
+  .step p.callout{
+    background:var(--white); border:1.5px solid var(--line); border-left:4px solid var(--red);
+    padding:16px 18px; border-radius:8px; color:var(--ink); font-size:15.5px;
+  }
+
+  .viz{background:var(--ink); border-radius:16px; padding:30px; text-align:center;}
+  .viz-stream{display:flex; justify-content:center; gap:8px; flex-wrap:wrap; margin-bottom:14px;}
+  .viz-chip{font-family:'IBM Plex Mono'; font-weight:700; font-size:13px; padding:8px 12px; border-radius:8px; background:#2A2621; color:#D8D3CC;}
+  .viz-chip.hot{background:var(--red); color:white;}
+  .viz-chip.cool{background:#3A342B; color:#B9B4AC;}
+  .viz-status{font-family:'IBM Plex Mono'; font-weight:700; font-size:15px; color:white; margin-top:4px;}
+  .viz-sub{font-family:'IBM Plex Mono'; font-size:12px; color:var(--amber); margin-top:8px;}
+
+  .bar-viz{background:var(--white); border:1.5px solid var(--line); border-radius:16px; padding:26px;}
+  .bar-row{display:flex; align-items:center; gap:14px; margin-bottom:16px;}
+  .bar-row:last-child{margin-bottom:0;}
+  .bar-label{font-family:'IBM Plex Mono'; font-size:12px; font-weight:700; width:100px; flex:0 0 auto; color:var(--ink-soft);}
+  .bar-track{flex:1; height:20px; background:var(--cream-deep); border-radius:6px; overflow:hidden;}
+  .bar-fill{height:100%; border-radius:6px;}
+  .bar-value{font-family:'IBM Plex Mono'; font-weight:700; font-size:14px; width:40px; text-align:right;}
+
+  .checklist{background:var(--white); border:1.5px solid var(--line); border-radius:16px; padding:24px;}
+  .check-row{display:flex; align-items:center; gap:12px; padding:8px 0; font-size:14.5px; font-weight:600;}
+  .check-row .mark{width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; color:white; flex:0 0 auto;}
+  .mark.yes{background:var(--green);}
+  .mark.no{background:var(--red);}
+  .check-final{margin-top:12px; padding-top:12px; border-top:1px solid var(--line); font-family:'IBM Plex Mono'; font-weight:700; color:var(--red-deep); text-align:center;}
+
+  .formula-box{background:var(--ink); color:white; border-radius:16px; padding:26px; text-align:center; font-family:'IBM Plex Mono'; font-size:16px; font-weight:600;}
+  @media (max-width:480px){ .formula-box{font-size:13px; padding:18px 12px;} }
+
+  .compare-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  @media (max-width:520px){ .compare-grid{grid-template-columns:1fr;} }
+  .compare-card{border-radius:14px; padding:18px; font-size:13.5px; line-height:1.6;}
+  .compare-card.good{background:#EEFAF2; border:1.5px solid var(--green);}
+  .compare-card.bad{background:#FDEEEE; border:1.5px solid var(--red);}
+  .compare-card b{display:block; font-family:'Poppins'; font-size:14px; margin-bottom:6px;}
+  .compare-card.good b{color:var(--green);}
+  .compare-card.bad b{color:var(--red-deep);}
+
+  .important-box{background:#FDEBEA; border:2px solid var(--red); border-radius:14px; padding:22px; text-align:center; font-family:'Poppins'; font-weight:800; font-size:18px; color:var(--red-deep);}
+  @media (max-width:480px){ .important-box{font-size:14.5px;} }
+
+  .quiz-card{background:var(--white); border:1.5px solid var(--line); border-radius:16px; padding:26px;}
+  .quiz-q{font-size:16px; font-weight:600; margin-bottom:18px; line-height:1.5;}
+  .quiz-opt{display:flex; align-items:center; gap:12px; padding:14px 16px; border:1.5px solid var(--line); border-radius:12px; margin-bottom:10px; cursor:pointer; font-size:15px; font-weight:500; background:var(--white);}
+  .quiz-opt:hover{border-color:var(--red);}
+  .quiz-opt .letter{width:26px; height:26px; border-radius:50%; background:var(--cream-deep); display:flex; align-items:center; justify-content:center; font-family:'IBM Plex Mono'; font-weight:700; font-size:12.5px; flex:0 0 auto;}
+  .quiz-opt.correct{border-color:var(--green); background:#EEFAF2;}
+  .quiz-opt.correct .letter{background:var(--green); color:white;}
+  .quiz-opt.incorrect{border-color:var(--red); background:#FDEEEE;}
+  .quiz-opt.incorrect .letter{background:var(--red); color:white;}
+  .quiz-opt.disabled{cursor:default;}
+
+  .feedback{margin-top:18px; padding:18px; border-radius:12px; display:none;}
+  .feedback.show{display:block;}
+  .feedback.correct-fb{background:#EEFAF2; border:1.5px solid var(--green);}
+  .feedback.wrong-fb{background:#FDEEEE; border:1.5px solid var(--red);}
+  .feedback .fb-title{font-family:'Poppins'; font-weight:700; font-size:15px;}
+  .feedback.correct-fb .fb-title{color:var(--green);}
+  .feedback.wrong-fb .fb-title{color:var(--red-deep);}
+  .feedback p{margin-top:6px; color:var(--ink); font-size:14px;}
+  .feedback .btn{margin-top:12px;}
+
+  .unlock-card{margin-top:60px; text-align:center; background:var(--ink); color:white; border-radius:20px; padding:44px 30px; display:none;}
+  .unlock-card.show{display:block;}
+  .unlock-card .check{width:56px; height:56px; border-radius:50%; background:var(--green); display:flex; align-items:center; justify-content:center; margin:0 auto 18px; font-size:26px; color:white;}
+  .unlock-card h3{color:white; font-size:22px;}
+  .unlock-card p{color:#C9C4BD; margin-top:8px; font-size:14px;}
+  .unlock-card .btn{margin-top:22px;}
+
+  footer{padding:40px 0; border-top:1px solid var(--line); margin-top:40px;}
+  .copyright{font-size:12px; color:var(--ink-soft); font-weight:600; text-align:center; line-height:1.6;}
+</style>
+  <!-- Google AdSense Auto Ads: enables account-controlled in-page, anchor, and vignette formats. -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5671905101681007" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="adsense.css">
+</head>
+<body>
+<div class="adsense-placement adsense-placement--top" data-adsense-placement="top" aria-label="Advertisement" hidden></div>
+
+
+<header>
+  <div class="header-inner">
+    <div><div class="crumb">ACADEMY / LEVEL 01 / LESSON 03</div></div>
+    <div style="display:flex; align-items:center; gap:14px;">
+      <span class="progress-pill">LESSON 03 / 20</span>
+      <a href="lessons.html" class="exit">×</a>
+    </div>
+  </div>
+  <div class="progress-bar"><div class="progress-bar-fill" style="width:15%;"></div></div>
+</header>
+
+<main>
+  <div class="wrap">
+    <h1 class="lesson-title">Understanding Market Movement</h1>
+
+    <div class="step">
+      <div class="step-label">STEP 1 · LEARN</div>
+      <p>Price moves because of a constant back-and-forth between buyers and sellers. When more participants want to buy at the current price than sell, price moves up. When more want to sell, it moves down.</p>
+      <p class="callout">Market movement is not random noise — it's the visible result of shifting pressure between buyers and sellers.</p>
+    </div>
+
+    <div class="step">
+      <div class="step-label">STEP 2 · SEE</div>
+      <div class="viz"><div class="viz-stream"><span class="viz-chip cool">847</span><span class="viz-chip hot">848 ▲</span><span class="viz-chip hot">849 ▲</span><span class="viz-chip cool">848 ▼</span></div><div class="viz-status">PRESSURE SHIFTS, PRICE FOLLOWS</div></div>
+    </div>
+
+    
+
+    <div class="step">
+      <div class="step-label">STEP 3 · PRACTICE</div>
+      <div class="quiz-card">
+        <div class="quiz-q">Price moves up when...</div>
+        <div id="quizOptions">
+          <div class="quiz-opt" data-correct="false"><span class="letter">A</span><span>There are more sellers than buyers</span></div>
+          <div class="quiz-opt" data-correct="true"><span class="letter">B</span><span>There are more buyers than sellers</span></div>
+          <div class="quiz-opt" data-correct="false"><span class="letter">C</span><span>The market closes</span></div>
+          <div class="quiz-opt" data-correct="false"><span class="letter">D</span><span>Ticks stop updating</span></div>
+        </div>
+        <div class="feedback correct-fb" id="feedbackCorrect">
+          <div class="fb-title">CORRECT ✓</div>
+          <p>More buying pressure than selling pressure at the current price pushes price upward.</p>
+        </div>
+        <div class="feedback wrong-fb" id="feedbackWrong">
+          <div class="fb-title">NOT QUITE</div>
+          <p>Think about which side needs to dominate for price to be pushed higher.</p>
+          <button class="btn btn-outline" id="tryAgainBtn">Try Again</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="unlock-card" id="unlockCard">
+      <div class="check">✓</div>
+      <h3>Concept Mastered ✓</h3>
+      <p>Next lesson unlocked</p>
+      <a href="lessons.html" class="btn btn-primary">Continue →</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="adsense-placement adsense-placement--footer" data-adsense-placement="footer" aria-label="Advertisement" hidden></div>
+
+  <div class="wrap">
+    <p class="social-mini" style="text-align:center; margin:0 0 14px; font-size:13px;">
+      <a href="https://www.instagram.com/kevdollarfx" target="_blank" rel="noopener" style="color:var(--red-deep); font-weight:600;">Instagram</a>
+      &nbsp;·&nbsp;
+      <a href="https://t.me/KevdollarFx" target="_blank" rel="noopener" style="color:var(--red-deep); font-weight:600;">Telegram</a>
+    </p>
+    <p class="copyright">© 2026 KevDollarFX. All rights reserved. This site's content, design, and branding may not be copied, reproduced, or claimed as the work of any other party.</p>
+  </div>
+</footer>
+
+<script>
+  const options = document.querySelectorAll('.quiz-opt');
+  const feedbackCorrect = document.getElementById('feedbackCorrect');
+  const feedbackWrong = document.getElementById('feedbackWrong');
+  const unlockCard = document.getElementById('unlockCard');
+  const tryAgainBtn = document.getElementById('tryAgainBtn');
+  let answered = false;
+  options.forEach(opt => {
+    opt.addEventListener('click', () => {
+      if (answered) return;
+      const isCorrect = opt.dataset.correct === 'true';
+      options.forEach(o => o.classList.add('disabled'));
+      if (isCorrect) {
+        answered = true;
+        opt.classList.add('correct');
+        feedbackCorrect.classList.add('show');
+        setTimeout(() => unlockCard.classList.add('show'), 300);
+      } else {
+        opt.classList.add('incorrect');
+        feedbackWrong.classList.add('show');
+      }
+    });
+  });
+  tryAgainBtn.addEventListener('click', () => {
+    options.forEach(o => { o.classList.remove('incorrect','disabled'); });
+    feedbackWrong.classList.remove('show');
+  });
+</script>
+<script defer src="adsense-placements.js"></script>
+</body>
+</html>

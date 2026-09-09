@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trading Lessons — KevDollarFX Academy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FBF5EF; --cream-deep:#F4EAE0; --ink:#17140F; --ink-soft:#57534C;
+    --red:#DD141C; --red-deep:#9A0D13; --line:#E4D9CC; --green:#268A4A; --amber:#C97A0A; --white:#FFFFFF;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0; background:var(--cream); color:var(--ink); font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased;}
+  h1,h2,h3{font-family:'Poppins',sans-serif; font-weight:700; line-height:1.1; margin:0; letter-spacing:-0.01em;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  a{color:inherit; text-decoration:none;}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 32px;}
+  @media (max-width:640px){ .wrap{padding:0 20px;} section{padding:52px 0 !important;} }
+  img{max-width:100%; display:block;}
+
+  .btn{display:inline-flex; align-items:center; gap:8px; padding:14px 26px; border-radius:999px; font-weight:600; font-size:15px; cursor:pointer; border:1.5px solid transparent; white-space:nowrap;}
+  .btn-primary{background:var(--red); color:var(--white);}
+  .btn-outline{background:transparent; border-color:var(--ink); color:var(--ink);}
+  .btn-dark{background:var(--ink); color:var(--white);}
+
+  header{position:sticky; top:0; z-index:50; background:rgba(251,245,239,0.92); backdrop-filter:blur(8px); border-bottom:1px solid var(--line);}
+  nav{display:flex; align-items:center; justify-content:space-between; padding:14px 0;}
+  .brand{display:flex; align-items:center; gap:10px;}
+  .brand img{width:42px; height:42px; object-fit:contain;}
+  .brand-text{font-family:'Poppins',sans-serif; font-weight:800; font-size:19px; line-height:1;}
+  .brand-text span{color:var(--red);}
+  .nav-links{display:flex; gap:30px; font-weight:500; font-size:15px; color:var(--ink-soft);}
+  .nav-links a.active{color:var(--ink); font-weight:700;}
+  .nav-links a:hover{color:var(--ink);}
+  .nav-actions{display:flex; align-items:center; gap:14px;}
+  .nav-actions .btn{padding:11px 20px; font-size:14px;}
+  .menu-toggle{display:none; width:40px; height:40px; border-radius:10px; border:1.5px solid var(--line); background:var(--white); align-items:center; justify-content:center; cursor:pointer;}
+  .menu-toggle span, .menu-toggle span::before, .menu-toggle span::after{content:""; display:block; width:18px; height:2px; background:var(--ink); position:relative;}
+  .menu-toggle span::before{position:absolute; top:-6px;} .menu-toggle span::after{position:absolute; top:6px;}
+  .mobile-panel{display:none; flex-direction:column; gap:2px; padding:10px 0 16px; border-top:1px solid var(--line);}
+  .mobile-panel a{padding:12px 4px; font-weight:600; font-size:15px; color:var(--ink); border-bottom:1px solid var(--line);}
+  .mobile-panel .mp-actions{display:flex; gap:10px; padding-top:14px;}
+  .mobile-panel .mp-actions .btn{flex:1; justify-content:center;}
+  header.menu-open .mobile-panel{display:flex;}
+  @media (max-width:900px){ .nav-links{display:none;} .nav-actions .btn-outline{display:none;} .menu-toggle{display:flex;} }
+
+  .page-hero{padding:56px 0 20px;}
+  .page-hero .crumb{font-family:'IBM Plex Mono'; font-size:12px; color:var(--red-deep); font-weight:600;}
+  .page-hero h1{font-size:44px; margin-top:12px;}
+  .page-hero p{color:var(--ink-soft); font-size:16px; margin-top:14px; max-width:520px; line-height:1.6;}
+  @media (max-width:560px){ .page-hero h1{font-size:30px;} }
+
+  section{padding:56px 0;}
+  .cat-head{display:flex; align-items:baseline; justify-content:space-between; margin-bottom:24px; gap:16px; flex-wrap:wrap;}
+  .cat-head h2{font-size:24px;}
+  .cat-head .cat-note{font-size:13px; color:var(--ink-soft);}
+
+  .lesson-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:18px;}
+  @media (max-width:900px){ .lesson-grid{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:560px){ .lesson-grid{grid-template-columns:1fr;} }
+
+  .lcard{background:var(--white); border:1.5px solid var(--line); border-radius:16px; padding:20px; display:flex; flex-direction:column; gap:10px; position:relative; transition:transform 0.15s, border-color 0.15s;}
+  .lcard:hover{transform:translateY(-3px); border-color:var(--red);}
+  .lcard .top-row{display:flex; justify-content:space-between; align-items:center;}
+  .lcard .lesson-num{font-family:'IBM Plex Mono'; font-size:12px; color:var(--red-deep); font-weight:600;}
+  .status{font-size:10.5px; font-weight:700; letter-spacing:0.03em; padding:4px 9px; border-radius:999px;}
+  .status-ready{background:#E9F5EC; color:var(--green);}
+  .lcard h3{font-size:16px; line-height:1.3;}
+  .lcard .go{font-size:13px; font-weight:600; color:var(--red-deep); margin-top:auto;}
+
+  footer{padding:50px 0 30px; border-top:1px solid var(--line);}
+  .footer-grid{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px;}
+  .footer-links{display:flex; gap:26px; font-size:14px; color:var(--ink-soft); flex-wrap:wrap;}
+  .social-row{display:flex; gap:16px; margin-top:18px; align-items:center; flex-wrap:wrap;}
+  .social-row a{display:flex; align-items:center; gap:7px; font-size:13.5px; font-weight:600; color:var(--ink-soft); border:1.5px solid var(--line); padding:7px 14px; border-radius:999px;}
+  .social-row a:hover{border-color:var(--red); color:var(--red-deep);}
+  .fine{font-size:12.5px; color:#A39E96; margin-top:20px; line-height:1.6;}
+  .copyright{font-size:12px; color:var(--ink-soft); margin-top:14px; font-weight:600; padding-top:14px; border-top:1px solid var(--line);}
+</style>
+  <!-- Google AdSense Auto Ads: enables account-controlled in-page, anchor, and vignette formats. -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5671905101681007" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="adsense.css">
+</head>
+<body>
+<div class="adsense-placement adsense-placement--top" data-adsense-placement="top" aria-label="Advertisement" hidden></div>
+
+
+<header>
+  <div class="wrap">
+    <nav>
+      <div class="brand">
+        <img src="kevdollarfx-logo.png" alt="KevDollarFX">
+        <div class="brand-text">KEVDOLLAR<span>FX</span></div>
+      </div>
+      <div class="nav-links">
+        <a href="index.html#academy">Academy</a>
+        <a href="lessons.html" class="active">Lessons</a>
+        <a href="strategies.html">Strategies</a>
+        <a href="index.html#research">Research</a>
+        <a href="kevdollarai.html">KevDollarAI</a>
+      </div>
+      <div class="nav-actions">
+        <a href="#" class="btn btn-outline">Log in</a>
+        <a href="index.html#academy" class="btn btn-primary">Start Learning</a>
+        <button class="menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false"><span></span></button>
+      </div>
+    </nav>
+    <div class="mobile-panel" id="mobilePanel">
+      <a href="index.html#academy">Academy</a>
+      <a href="lessons.html">Lessons</a>
+      <a href="strategies.html">Strategies</a>
+      <a href="index.html#research">Research</a>
+      <a href="kevdollarai.html">KevDollarAI</a>
+      <div class="mp-actions">
+        <a href="#" class="btn btn-outline">Log in</a>
+        <a href="index.html#academy" class="btn btn-primary">Start Learning</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="page-hero">
+  <div class="wrap">
+    <div class="crumb">ACADEMY / LESSONS</div>
+    <h1>Trading lessons</h1>
+    <p>Learn one concept at a time. Each lesson follows the same pattern: learn it, see it, work the idea, then prove it with a quick check.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="cat-head"><h2>Foundation lessons</h2><span class="cat-note">Level 01 · Beginner</span></div>
+    <div class="lesson-grid">
+      <a href="lesson-what-is-trading.html" class="lcard"><div class="top-row"><span class="lesson-num">LESSON 01</span><span class="status status-ready">READY</span></div><h3>What Is Trading?</h3><span class="go">Start lesson →</span></a>
+      <a href="lesson-what-is-a-tick.html" class="lcard"><div class="top-row"><span class="lesson-num">LESSON 02</span><span class="status status-ready">READY</span></div><h3>What Is a Tick?</h3><span class="go">Start lesson →</span></a>
+      <a href="lesson-market-movement.html" class="lcard"><div class="top-row"><span class="lesson-num">LESSON 03</span><span class="status status-ready">READY</span></div><h3>Understanding Market Movement</h3><span class="go">Start lesson →</span></a>
+      <a href="lesson-trading-setup.html" class="lcard"><div class="top-row"><span class="lesson-num">LESSON 04</span><span class="status status-ready">READY</span></div><h3>What Is a Trading Setup?</h3><span class="go">Start lesson →</span></a>
+      <a href="lesson-forced-entries.html" class="lcard"><div class="top-row"><span class="lesson-num">LESSON 05</span><span class="status status-ready">READY</span></div><h3>Why Traders Force Entries</h3><span class="go">Start lesson →</span></a>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="cat-head"><h2>Analysis lessons</h2><span class="cat-note">Level 02 · Market Analysis</span></div>
+    <div class="lesson-grid">
+      <a href="lesson-momentum.html" class="lcard"><div class="top-row"><span class="lesson-num">LESSON 06</span><span class="status status-ready">READY</span></div><h3>Momentum</h3><span class="go">Start lesson →</span></a>
+      <a href="lesson-velocity.html" class="lcard"><div class="top-row"><span class="lesson-num">LESSON 07</span><span class="status status-ready">READY</span></div><h3>Velocity</h3><span class="go">Start lesson →</span></a>
+      <a href="lesson-volatility.html" class="lcard"><div class="top-row"><span class="lesson-num">LESSON 08</span><span class="status status-ready">READY</span></div><h3>Volatility</h3><span class="go">Start lesson →</span></a>
+      <a href="lesson-confirmation.html" class="lcard"><div class="top-row"><span class="lesson-num">LESSON 09</span><span class="status status-ready">READY</span></div><h3>Confirmation</h3><span class="go">Start lesson →</span></a>
+      <a href="lesson-invalid-setups.html" class="lcard"><div class="top-row"><span class="lesson-num">LESSON 10</span><span class="status status-ready">READY</span></div><h3>Invalid Setups</h3><span class="go">Start lesson →</span></a>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="cat-head"><h2>Quantitative lessons</h2><span class="cat-note">Level 03 · Probability</span></div>
+    <div class="lesson-grid">
+      <a href="lesson-probability.html" class="lcard"><div class="top-row"><span class="lesson-num">LESSON 11</span><span class="status status-ready">READY</span></div><h3>Probability</h3><span class="go">Start lesson →</span></a>
+      <a href="lesson-frequency.html" class="lcard"><div class="top-row"><span class="lesson-num">LESSON 12</span><span class="status status-ready">READY</span></div><h3>Frequency</h3><span class="go">Start lesson →</span></a>
+      <a href="lesson-expected-frequency.html" class="lcard"><div class="top-row"><span class="lesson-num">LESSON 13</span><span class="status status-ready">READY</span></div><h3>Expected Frequency</h3><span class="go">Start lesson →</span></a>
+      <a href="lesson-deviation.html" class="lcard"><div class="top-row"><span class="lesson-num">LESSON 14</span><span class="status status-ready">READY</span></div><h3>Understanding Deviation</h3><span class="go">Start lesson →</span></a>
+      <a href="lesson-sample-size.html" class="lcard"><div class="top-row"><span class="lesson-num">LESSON 15</span><span class="status status-ready">READY</span></div><h3>Sample Size</h3><span class="go">Start lesson →</span></a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="adsense-placement adsense-placement--footer" data-adsense-placement="footer" aria-label="Advertisement" hidden></div>
+
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="brand"><img src="kevdollarfx-logo.png" alt="KevDollarFX" style="width:32px;height:32px;"><div class="brand-text" style="font-size:16px;">KEVDOLLAR<span>FX</span></div></div>
+      <div class="footer-links">
+        <a href="index.html#academy">Academy</a>
+        <a href="lessons.html">Lessons</a>
+        <a href="strategies.html">Strategies</a>
+        <a href="index.html#research">Research</a>
+        <a href="kevdollarai.html">KevDollarAI</a>
+      </div>
+    </div>
+    <div class="social-row">
+      <a href="https://www.instagram.com/kevdollarfx" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://t.me/KevdollarFx" target="_blank" rel="noopener">Telegram</a>
+    </div>
+    <p class="fine">KevDollarFX is an education and research platform. Content is for learning purposes and reflects internal research frameworks, not financial advice or guaranteed outcomes.</p>
+    <p class="copyright">© 2026 KevDollarFX. All rights reserved. The KevDollarFX name, mark, and all site content, design, and branding are the property of KevDollarFX. No part of this site may be copied, reproduced, redistributed, or claimed as the work of any other person or entity without prior written permission.</p>
+  </div>
+</footer>
+
+<script>
+  const menuToggle = document.getElementById('menuToggle');
+  const header = document.querySelector('header');
+  menuToggle.addEventListener('click', () => {
+    const open = header.classList.toggle('menu-open');
+    menuToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+</script>
+<script defer src="adsense-placements.js"></script>
+</body>
+</html>
