@@ -52,8 +52,9 @@
   async function fetchPosts(filters) {
     var response = await fetch(requestUrl(filters), {
       headers: {
-        apikey: SUPABASE_PUBLISHABLE_KEY,
-        Authorization: 'Bearer ' + SUPABASE_PUBLISHABLE_KEY
+        // Modern sb_publishable_* keys are sent as the apikey header; they are
+        // not JWTs and must not be placed in an Authorization bearer header.
+        apikey: SUPABASE_PUBLISHABLE_KEY
       }
     });
     if (!response.ok) throw new Error('content request failed');
