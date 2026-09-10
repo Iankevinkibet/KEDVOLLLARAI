@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Published piece — KevDollarFX</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
@@ -21,6 +21,15 @@
     nav a { color:var(--ink-soft); font-size:14px; font-weight:600; }
     @media (max-width:600px) { .wrap { padding:0 20px; } .brand img { width:34px; height:34px; } }
   </style>
+<script>
+  // Keep the mobile reading layout fixed as requested.
+  document.addEventListener('gesturestart', function (event) { event.preventDefault(); }, { passive: false });
+  document.addEventListener('gesturechange', function (event) { event.preventDefault(); }, { passive: false });
+  document.addEventListener('gestureend', function (event) { event.preventDefault(); }, { passive: false });
+  document.addEventListener('wheel', function (event) {
+    if (event.ctrlKey) event.preventDefault();
+  }, { passive: false });
+</script>
 </head>
 <body>
   <header>
