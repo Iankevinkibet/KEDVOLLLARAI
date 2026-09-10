@@ -4,7 +4,7 @@
   // This is a public Supabase publishable key. Row-level security only exposes
   // rows whose status is "published"; no privileged key belongs in this file.
   var SUPABASE_URL = 'https://ezimeziapfagyyqbzmpi.supabase.co';
-  var SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_jexD7dA8UHAANOn0NuIVtg_toAomwEC';
+  var SUPABASE_PUBLISHABLE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV6aW1lemlhcGZhZ3l5cWJ6bXBpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkwMjQ1NzIsImV4cCI6MjEwNDYwMDU3Mn0.iSUk9jB7VGQiqCvrjmZIJFd7BS14vdiIpPOt7u1fPI4';
   var TABLE = SUPABASE_URL + '/rest/v1/content_posts';
   var SELECT = 'id,title,slug,kind,status,excerpt,content,cover_image_url,is_premium,published_at,updated_at';
 
@@ -52,9 +52,8 @@
   async function fetchPosts(filters) {
     var response = await fetch(requestUrl(filters), {
       headers: {
-        // Modern sb_publishable_* keys are sent as the apikey header; they are
-        // not JWTs and must not be placed in an Authorization bearer header.
-        apikey: SUPABASE_PUBLISHABLE_KEY
+        apikey: SUPABASE_PUBLISHABLE_KEY,
+        Authorization: 'Bearer ' + SUPABASE_PUBLISHABLE_KEY
       }
     });
     if (!response.ok) throw new Error('content request failed');
