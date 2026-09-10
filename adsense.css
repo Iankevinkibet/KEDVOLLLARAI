@@ -50,3 +50,39 @@
     padding-top: 18px;
   }
 }
+
+/* Addsterra / external learning-ad placements */
+.external-ad-zone {
+  width: 100%;
+  max-width: 970px;
+  margin: 28px auto;
+  padding: 18px 16px;
+  box-sizing: border-box;
+  text-align: center;
+  border-top: 1px solid rgba(128, 112, 96, 0.16);
+  border-bottom: 1px solid rgba(128, 112, 96, 0.16);
+}
+.external-ad-link {
+  display: inline-block;
+  margin-bottom: 18px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.external-ad-unit {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 100%;
+  min-height: 20px;
+  margin: 20px auto;
+  overflow: hidden;
+}
+.external-ad-unit--skyscraper {
+  min-height: 250px;
+}
+@media (max-width: 760px) {
+  .external-ad-unit--leaderboard,
+  .external-ad-unit--banner {
+    transform-origin: top center;
+  }
+}

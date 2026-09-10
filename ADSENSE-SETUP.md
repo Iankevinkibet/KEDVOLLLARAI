@@ -34,3 +34,12 @@ The supplied Auto Ads loader does **not** create arbitrary video pre-roll or foo
 ## Verification
 
 AdSense may take time to review a site and begin serving ads. Test with browser developer tools and the AdSense publisher controls; do not click your own ads. If an ad unit is unfilled, Google may leave the placement blank.
+
+
+## Addsterra / external learning ads added
+
+The supplied Addsterra, Profitablerate CPM, and HighRevenueFormat snippets are included on all 24 pages. The first script is immediately before `</head>`, the second Profitablerate script is immediately before `</body>`, and the linked/native/banner/rectangle/skyscraper/leaderboard units are grouped in the body before the footer so learners can continue through the page without an ad interrupting the lesson steps.
+
+The hyperlink is marked as `sponsored nofollow` and opens in a new tab. The external scripts are third-party code and may be controlled by their ad network after deployment.
+
+**Important:** the container ID in the supplied native snippet was written as `contai*****e0`, with asterisks. That masked value was preserved exactly in the package, but the native unit may not render until the complete container ID is supplied by the ad network. Replace it with the unmasked ID if Addsterra gave you one.
