@@ -6,7 +6,7 @@
   var SUPABASE_URL = 'https://ezimeziapfagyyqbzmpi.supabase.co';
   var SUPABASE_PUBLISHABLE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV6aW1lemlhcGZhZ3l5cWJ6bXBpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkwMjQ1NzIsImV4cCI6MjEwNDYwMDU3Mn0.iSUk9jB7VGQiqCvrjmZIJFd7BS14vdiIpPOt7u1fPI4';
   var TABLE = SUPABASE_URL + '/rest/v1/content_posts';
-  var SELECT = 'id,title,slug,kind,status,excerpt,content,cover_image_url,is_premium,published_at,updated_at';
+  var SELECT = 'id,title,slug,kind,status,excerpt,content,cover_image_url,pdf_url,pdf_name,is_premium,published_at,updated_at';
 
   function escapeHtml(value) {
     return String(value == null ? '' : value)
@@ -36,6 +36,10 @@
     } catch (error) {
       return '';
     }
+  }
+
+  function safeDownloadUrl(value) {
+    return safeImageUrl(value);
   }
 
   function requestUrl(filters) {
@@ -107,6 +111,8 @@
       var post = posts[0];
       if (!post) throw new Error('missing post');
       var image = safeImageUrl(post.cover_image_url);
+      var pdf = safeDownloadUrl(post.pdf_url);
+      var pdfLink = pdf ? '<a class="content-post-download" href="' + escapeHtml(pdf) + '" download target="_blank" rel="noopener">Download educational PDF' + (post.pdf_name ? ': ' + escapeHtml(post.pdf_name) : '') + ' ↓</a>' : '';
       shell.innerHTML = '<a class="content-post-back" href="index.html">← Back to KevDollarFX</a>' +
         '<div class="content-post-kicker">' + escapeHtml(labelFor(post)) + ' · ' + escapeHtml(formatDate(post.published_at || post.updated_at)) + '</div>' +
         '<h1>' + escapeHtml(post.title) + '</h1>' +
@@ -114,6 +120,7 @@
         '<div class="content-post-body">' +
         (image ? '<img src="' + escapeHtml(image) + '" alt="">' : '') +
         '<p>' + escapeHtml(post.content).replace(/\r?\n/g, '<br>') + '</p>' +
+        pdfLink +
         '</div>';
       document.title = post.title + ' — KevDollarFX';
     } catch (error) {

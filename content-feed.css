@@ -109,6 +109,16 @@
   border-radius: 18px;
   object-fit: cover;
 }
+.content-post-download {
+  display: inline-flex;
+  margin-top: 24px;
+  padding: 13px 18px;
+  border-radius: 999px;
+  background: #9A0D13;
+  color: #FFF;
+  font-weight: 700;
+  text-decoration: none;
+}
 .content-post-body p {
   margin: 0;
 }
