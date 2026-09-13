@@ -1,0 +1,10 @@
+{
+  "name": "KevDollarFX Academy",
+  "short_name": "KevDollarFX",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FBF5EF",
+  "theme_color": "#17140F",
+  "description": "KevDollarFX trading education and KevDollarAI market research.",
+  "icons": [{"src":"/kevdollarfx-logo.png","sizes":"any","type":"image/png","purpose":"any maskable"}]
+}
