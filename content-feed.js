@@ -6,7 +6,7 @@
   var SUPABASE_URL = 'https://ezimeziapfagyyqbzmpi.supabase.co';
   var SUPABASE_PUBLISHABLE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV6aW1lemlhcGZhZ3l5cWJ6bXBpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkwMjQ1NzIsImV4cCI6MjEwNDYwMDU3Mn0.iSUk9jB7VGQiqCvrjmZIJFd7BS14vdiIpPOt7u1fPI4';
   var TABLE = SUPABASE_URL + '/rest/v1/content_posts';
-  var SELECT = 'id,title,slug,kind,status,excerpt,content,cover_image_url,pdf_url,pdf_name,is_premium,published_at,updated_at';
+  var SELECT = 'id,title,slug,kind,status,excerpt,content,cover_image_url,pdf_url,pdf_name,quiz,is_premium,published_at,updated_at';
 
   function escapeHtml(value) {
     return String(value == null ? '' : value)
@@ -75,6 +75,33 @@
       '</a>';
   }
 
+  function quizMarkup(post) {
+    if (post.kind !== 'lesson' || !post.quiz || !post.quiz.question || !Array.isArray(post.quiz.choices) || !post.quiz.choices.length) return '';
+    var choices = post.quiz.choices.map(function (choice, index) {
+      var label = typeof choice === 'string' ? choice : choice.text;
+      return '<button type="button" class="lesson-quiz-choice" data-quiz-choice="' + index + '">' + escapeHtml(label || ('Choice ' + (index + 1))) + '</button>';
+    }).join('');
+    return '<section class="lesson-quiz" data-lesson-quiz><div class="content-post-kicker">KNOWLEDGE CHECK</div><h2>' + escapeHtml(post.quiz.question) + '</h2><div class="lesson-quiz-choices">' + choices + '</div><p class="lesson-quiz-result" data-quiz-result aria-live="polite"></p></section>';
+  }
+
+  function attachQuiz(shell, post) {
+    var quiz = shell.querySelector('[data-lesson-quiz]');
+    if (!quiz || !post.quiz) return;
+    var result = quiz.querySelector('[data-quiz-result]');
+    quiz.querySelectorAll('[data-quiz-choice]').forEach(function (button) {
+      button.addEventListener('click', function () {
+        var index = Number(button.getAttribute('data-quiz-choice'));
+        var choice = post.quiz.choices[index];
+        var correct = typeof choice === 'object' && choice.correct === true;
+        if (!correct && typeof post.quiz.answer === 'number') correct = index === post.quiz.answer;
+        quiz.querySelectorAll('.lesson-quiz-choice').forEach(function (item) { item.classList.remove('is-correct','is-selected'); });
+        button.classList.add('is-selected');
+        if (correct) { button.classList.add('is-correct'); result.textContent = 'Correct. Keep building the reasoning, not just the answer.'; result.className = 'lesson-quiz-result is-correct'; }
+        else { result.textContent = 'Not quite. Re-read the lesson and try again.'; result.className = 'lesson-quiz-result is-wrong'; }
+      });
+    });
+  }
+
   function showFeedMessage(root, message, isError) {
     root.dataset.contentFeedState = isError ? 'error' : 'ready';
     var list = root.querySelector('[data-content-feed-list]');
@@ -121,7 +148,9 @@
         (image ? '<img src="' + escapeHtml(image) + '" alt="">' : '') +
         '<p>' + escapeHtml(post.content).replace(/\r?\n/g, '<br>') + '</p>' +
         pdfLink +
+        quizMarkup(post) +
         '</div>';
+      attachQuiz(shell, post);
       document.title = post.title + ' — KevDollarFX';
     } catch (error) {
       shell.innerHTML = '<a class="content-post-back" href="index.html">← Back to KevDollarFX</a><h1>Piece not found.</h1><p class="content-post-excerpt">This piece may still be a draft or its link may have changed.</p>';

@@ -132,3 +132,19 @@
   .content-post-excerpt { font-size: 17px; }
   .content-post-body { font-size: 16px; }
 }
+
+.lesson-quiz {
+  margin-top: 42px;
+  padding: 28px;
+  border: 1.5px solid var(--line);
+  border-radius: 18px;
+  background: linear-gradient(145deg, #fff 0%, #fff6f1 100%);
+}
+.lesson-quiz h2 { margin: 10px 0 20px; font-size: 24px; }
+.lesson-quiz-choices { display: grid; gap: 10px; }
+.lesson-quiz-choice { padding: 14px 16px; border: 1.5px solid var(--line); border-radius: 12px; background: #fff; color: var(--ink); text-align: left; font: inherit; cursor: pointer; }
+.lesson-quiz-choice:hover, .lesson-quiz-choice.is-selected { border-color: var(--red); }
+.lesson-quiz-choice.is-correct { border-color: var(--green); background: #edf8ef; }
+.lesson-quiz-result { min-height: 22px; margin: 16px 0 0; font-size: 14px; font-weight: 700; }
+.lesson-quiz-result.is-correct { color: var(--green); }
+.lesson-quiz-result.is-wrong { color: var(--red-deep); }
