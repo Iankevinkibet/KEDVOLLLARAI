@@ -46,6 +46,13 @@
     var url = new URL(TABLE);
     url.searchParams.set('select', SELECT);
     url.searchParams.set('status', 'eq.published');
+    // Do not expose legacy published rows without a public URL. Those rows
+    // render as post.html?slug= and produce the "Piece not found" screen.
+    if (filters.slug) url.searchParams.set('slug', 'eq.' + filters.slug);
+    else {
+      url.searchParams.set('slug', 'not.is.null');
+      url.searchParams.append('slug', 'neq.');
+    }
     url.searchParams.set('order', 'published_at.desc.nullslast,updated_at.desc');
     url.searchParams.set('limit', String(filters.limit || 12));
     if (filters.kind) url.searchParams.set('kind', 'eq.' + filters.kind);
